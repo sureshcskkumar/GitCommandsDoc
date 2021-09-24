@@ -1,0 +1,558 @@
+# Note: Just for personal reference. Don't expect the best accuracy or completeness of the content.
+
+# NOTE: The resources used in the making of this document for my reference:
+# https://www.simplilearn.com/learn-git-basics-skillup
+# https://www.simplilearn.com/free-full-stack-java-developer-course-skillup (only the git chapter)
+# https://www.coursera.org/learn/version-control-with-git
+# https://www.coursera.org/learn/introduction-git-github
+
+# To make a local directory a git repository
+git init
+
+# Check git logs
+git log
+git log --oneline
+git log --pretty=oneline
+git log --oneline --decorate --graph
+# git logs of a particular branch can be obtained by mentioning the branchName as shown:
+git log branchName --oneline --decorate --graph
+# To check only a certain number of the latest commits, use hyphen followed by a number.
+# Example: To see the latest two commits:
+git log --oneline -2
+# To see the logs of all branches including the remote branches:
+git log --all
+git log --all --oneline --graph
+# To check logs with the changes done in the commits, ue -p:
+git log -p
+# Example to check only the changes done in the last commit log:
+git log -p -1
+
+# git log with --stat option:
+git log --stat
+
+# we can also see the logs of remote branches:
+git log -p origin/master
+git log origin/master
+
+
+# Showing particular commit using git show:
+git show commitID
+
+
+# To revert to previous versions:
+# Example: To revert file called abcd.txt to previous version:
+git checkout Head~1 abcd.txt
+# Example to revert to a previous version based on commit ID in git logs of a previous commit:
+git checkout b9de251 abcd.txt
+
+
+# Ignoring git files:
+# Add the particular file or a file pattern in the .gitignore file
+# When a file of the ignored type needs to be added,
+# then the -f option needs to be used in git add command
+# Example: If the .class files are ignored in .gitignore
+git add abcd.class
+# The above line results in an error. -f option needs to be used as shown below:
+git add -f abcd.class
+
+# To use the .gitignore file, it has to be created, added and committed similar to other files.
+# Example of creating a .gitignore file to ignore class files, and .txt files.
+echo .class > .gitignore
+echo .txt >> .gitignore  # Note: > creates file, >> appends to existing file.
+git add .gitignore
+git commit -m "Creating .gitignore"
+
+# Remove file:
+git rm filename
+# Remove file from the staging area:
+git rm --cached filename
+# Note: The file will be untracked as it is removed from the staging area
+# File can be restored using the commit Id and checking out the correct commit
+
+
+# Rename file:
+git mv filename newFilename
+
+
+#Adding remote repository
+git remote add origin https://github.com/sureshcskkumar/FirstRepo.git
+
+#Checking remote repository
+git remote -v
+git remote --verbose
+
+# Setting or Generating ssh keygen (-t stands for type(default is rsa), -C for comment)
+ssh-keygen -t rsa -C sureshcskkumar@gmail.com
+# or just
+ssh-keygen
+
+# Default location of keys ssh-keys: C:\Users\user\.ssh\id_rsa.pub and C:\Users\user\.ssh\id_rsa
+# (/c/Users/user/.ssh/id_rsa.pub and /c/Users/user/.ssh/id_rsa)
+# id_rsa.pub is the public key and id_rsa is the private key
+
+
+# Copy the public key stored in the file: id_rsa.pub
+# Example:
+# ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCkN9jutwKhqmKS8izrKD4nBfE1iUB7XErDmNSP12UArr6yEZYOxu71ELFE4nXYr+1Ar/QqL4bHTxMAzQYbxqdFO83kNObRBlwpx1sBNIypH1hYzHGeYn3oPcbqK+jotyhinjTiY/swcbpo8aAsNkOn+suLMzGPrKMWczFjrYEXc2H2o7aI8ab3mg/gq3VpYunqO4NTfsop2jFMyJt/apA+yZ4iyepul2Dvt3UTEA6IQM+Ng33nVekLX7k+DoylcJXsOUZjLHm95gvK2CUNP9LddaJyC0cbG6QlXRDrJd96FGJwmUBF/FAIJBxJPzdRwQAazpRzhTruQYEDfks+EhhQdmzR1bN7Vsg3+rcWaCpJ+Lpl6uPaCuMWJpF2nAXL+xjgDfG/CkFZP+En76NLwsHJVRznt2igkfEsdf2cCVUWEp9+86FsP/66f20G5VpKCLwNhVWPHBEyYUXnW/L1XBlNlvHBExZaUutI3628oC8tiEegDWNkoAZjvKmvDnxlE9k= user@DESKTOP-I6SANDE
+
+# To set the SSH key in github, goto github settings, select "SSH and GPG keys"
+# and then add the ssh key copied from id_rsa.pub
+
+# To authenticate after setting the ssh, execute the command:
+ssh -T git@github.com
+# Enter the correct pass-phrase
+# The above step is not needed if the pass-phrase is empty.
+
+
+# Clone remote git repository
+git clone git@github.com:sureshcskkumar/sshDemoRepo.git
+# or using https:
+git clone https://github.com/sureshcskkumar/sshDemoRepo.git
+
+
+# When dealing with local changes
+# To revert to some previous commitID and discard some of the latest commits,
+# but keep the file changes that were done as part of those commits:
+# git reset --soft commitID
+# Example:
+git reset --soft 239ff1a
+# Purpose of this is to combine commits (and commit messages) and/or to revert local commits
+
+
+# To revert a change that is in the remote repository, we need to make the change in our local
+# and make a new commit and push it to remote repo.
+# First, to revert the change, use the revert option:
+# git revert commitID
+# Example:
+git revert 239ff1a
+# On doing this, you will be redirected to a text editor (default: vi editor),
+# where you can see the change that is being done to revert the commit
+
+
+
+
+
+
+# Pulling latest code from remote repository:
+git pull origin master
+# Or to pull from a different branch in the repository:
+git pull origin branchName
+
+
+
+
+########## Best practice when using git:
+
+# Never change the local master
+# Always do the changes in a different branch
+# Pull all the latest new changes in remote repository to the master
+# Then, create a branch, then make the changes in the branch and commit the changes
+
+# Again, when you need to work on a different task
+# goto the master branch, pull the latest changes and start working on the new task
+
+# You can delete the local branch when the changes are merged in the remote repository
+
+
+
+# To get the list of branches:
+git branch
+# or:
+git branch -v
+# or:
+git branch -av
+
+# Create branch:
+git branch branchName
+
+# To switch (checkout or move) to new branch:
+git checkout branchName
+
+# Shortcut to switch to the previous active branch or detached HEAD.
+git checkout -
+# The single dash here means the previous active branch or detached HEAD.
+
+
+
+
+# When creating the branch for the first time,
+# then the branch can be created and checked-out using a single command:
+git checkout -b branchName
+
+# To push changes from branch to remote:
+git push origin branchName
+# or:
+git push origin branchName
+
+
+
+# To get the difference between two branches before merging, use git diff:
+git diff branchName1..branchName2
+# Two types of merges: Fast-forward merge and Recursive merge.
+
+# Some other resource mentions that there are 4 types of merges:
+# Fast-forward merge, Merge commit, Squash merge, Rebase merge
+
+
+# To get the changes of a different branch to the current branch (generally done from the master):
+git merge branchName
+# Once the master branch is merged with the branch changes,
+# these changes can be pushed to remote repository
+# so that the changes are available in the master in remote repository
+
+# git merge can result in merge conflicts which can either be resolved manually or be aborted using the --abort option:
+git merge --abort
+# This will revert the changes done while performing the git merge command,
+# that is the changes are reverted to the previously saved snapshot
+
+# If the merge conflict has been resolved manually, here the branch will still be in the merging phase.\
+# This is correctd by doing a git commit after resolving a merge conflict
+git commit
+
+
+# To merge to a different branch other than master, switch to the branch where you wish to merge
+# Then use the merge command specifying the branchName from which you wish to merge the changes from.
+
+
+# git delete branch:
+git branch -D branchName
+# or:
+git branch --delete branchName
+
+# To delete remote branch after it is deleted locally:
+git branch --delete branchName
+
+
+
+
+
+
+# When push is rejected because of remote conflicts
+# First pull from the remote repository
+# Here, "Auto-merging" will take place in the conflicting files
+
+
+# When Auto-merging fails due to some reason,
+# we have to merge the changes manually usuing
+# We can know that the Auto-merging has failed based on the error message during the git pull,
+# and also from the state of the branch will be in merging phase
+# indicated by the name of the branch as master|MERGING
+
+# We correct the conflict, we can goto the file(s) that were mentioned as conflicts during the git pull,
+# and correct the changes as needed and commit and push the code.
+
+
+
+
+######
+
+# To get the difference between two branches before merging, use git diff:
+git diff branchName1..branchName2
+# Two types of merges: Fast-forward merge and Recursive merge.
+
+
+
+
+
+
+#####
+# When there are file changes that are not committed in the current branch,
+# then git does not allow switching to another branch.
+# One solution is to commit the changes and switch, but to avoid this if the task is not yet completed
+# stashing can be used.
+# Stashing is used under these situations to avoid committing unfinished tasks
+# stashing is used in git to switch between branches when work in some branch is still incomplete.
+
+# When we do a git stash save,
+# then the changes that we have done will be saved and removed from the current working directory
+# These changes can be restored using a git apply or a git pop.
+# Here, stash apply keeps the saved stash so that it can be reused
+# stash pop will apply the stash and removes(pops) it, so the same stash cannot be reused
+# stash clear can be used to clear the saved stash.
+
+# git stashing commands:
+git stash save "stash message"
+# A good practice is to have a label in the stash message, like:
+git stash save "someLabel : stash message"
+git stash list 
+git stash apply
+git stash pop
+git stash show
+git stash clear
+
+
+###
+# git rebase can be used instead of git merge in some situations where,
+# we need to move a branch to a different commit
+
+# In merge, all commits from the point of divergence are brought into a new commit,
+# whereas in rebase the branch commits are moved sequentially after the latest master commit
+
+# Example :
+git rebase branchName
+git rebase master
+
+
+
+
+
+
+
+########
+# git's network commands: clone, fetch, pull, push
+# Here fetch is performed to fetch only the remote objects and not the files.
+# It can be considered as saying that a git fetch only fetches commit history from the remote repository
+# A fetch can be performed to check if a fast-forward merge is possible by doing a pull.
+git fetch
+# git merge can be used after git fetch to merge the remote branch to the local branch:
+git merge
+
+# Best way to understand git fetch is to understand that
+# it fetches the changes into origin/master branch and origin branches
+
+# Note: git fetch fetches the changes from the remote repo,
+# but never changes the local repo. For this we have to do a git merge.
+# Essentially, git fetch and git merge can be done using a single command: git pull.
+
+
+####
+# git commit --amend can be used
+# - to change commit messages (if there is some typo or some error in the message)
+# - to change project files (that is the files involved in the commit)
+#	This is done by making the additional changes and doing a commit amend with --no-edit option
+# Example:
+git commit --amend -m "corrected commit message"
+# Example:
+git commit --amend --no-edit
+
+# amend option can be used when the commit has not yet been pushed to a public or a remote repository
+# Example scenario:
+echo "file1" > file1.txt
+echo "file2" > file2.txt
+git add file1.txt
+# Here, note that only one file is added to the staging area
+git commit -m "Adding two files"
+# If at this point a git push is used to push to a public or a remote repository, avoid using amend.
+# Here, to add the other file and amend it to the same commit:
+git add file2.txt
+git commit --amend
+# Here a text editor is opened where we can update the commit message if needed, or leave it as is
+# Alternately, we could have given a message using the -m option
+
+
+
+
+######
+# squashing using interactive mode of rebase (rebase -i)
+# Example to squash the last 3 commits:
+git rebase -i HEAD~3
+# Note: Here, a file in a text editor will be opened,
+# where we have to change from pick to squash (or s) to squash all the necessary commits
+
+####
+# Using rebase -i to squash:
+# switch to the branch that you are working on, and do a git rebase:
+git rebase -i master
+# Here, we will be redirected to a text edior,
+# where we change "pick" to "squash" for all the commits except for the first one so as to squash
+# after we specify that the chages are to be squashed, then we will be redirected to another text edior,
+# where we can update the combined commit message
+git show # this can be used here to check the status of what has happened after our rebase.
+git status # this can be used to check the status of our branch
+git log --graph --oneline --all -4 # check the graph log
+git push ###This will fail as this does not allow fast-forward, then here we should not use merge as we have to combine two commits intop one, so we have to do a git push -f
+git push -f # or git push --force # This will force push oure changes into the repo
+git log --graph --oneline --all -4 # check the graph log
+####
+
+
+
+###
+# squash merge:
+git checkout master
+git merge --squash branchName
+git commit
+ - accept or modify the squash message
+
+
+####################
+# Pull Request (or Merge Request)
+# First, in local:
+git checkout -b branchName
+# Perform necessary changes in the branch
+git add .
+git commit -m "commit message"
+
+# If fork is not maintained and
+# if pushing directly to upstream, but to a different branch:
+git push --set-upstream origin branchName
+# Then pull request should be created in remote repository (like github repository)
+
+# A remote branch is deleted using the following syntax:
+git push -d <remote> <branch>
+
+
+
+###########
+# Types of git workflows: Centralized workflow, Feature branch Workflow, Forking workflow, Gitflow workflow
+
+# Note: what I used when working in Huawei is Forking workflow:
+
+# Create a fork in remote
+# clone the forked repo:
+git clone ssh:<forked>.......git
+
+git remote add origin <forkedURL>
+git remote add upstream <upstreamURL>
+
+# When doing a pull, generally pull only from the upstream:
+git pull upstream master
+# Synchronize using:
+git push origin master
+
+
+# Never do any changes of the master in loca
+# Always create a branch and do the changes
+# After the changes are done, do a push to remote fork using the branch:
+git push origin branchName
+# or:
+git push -u origin branchName
+
+# Then raise a Pull-request
+# Once the changes are merged in the upstream,
+# you can pull the changes to the local master (and push to fork master),
+# and create a branch using the latest code and start working and repeat the process.
+
+
+
+####
+# -a option with commit can be used to commit all the tracked files by skipping the git add command
+# but using this option, if there is any new file that is not yet tracked,
+# then that file has to be added using the git add command if that file had to included in the current commit
+git commit -a -m "commit message"
+
+
+
+
+##
+# git diff command is used to show all the changes that are not yet staged.
+git diff
+# It can be used with an optional filename to check the changes that are done in just one file.
+
+# To see the changes that are staged but not committed, use --staged:
+git diff --staged
+
+##
+# -p option with git add command can be used to get a prompt for all the changes that are done
+# and will be asked to enter y/n to add each of the change to the staging area.
+git add -p
+
+###
+# git checkout modifiedFileName can be used to discard changes done in a file
+# It will restore the modified file to the latest stored snapshot
+git checkout modifiedFileName
+
+
+###
+# git reset can be used to unstage a file from the staging area.
+# Example : Suppose you added a debug file unintentionally to the staging area:
+echo "sasd" > abcd.tmp
+git add *
+git status
+# abcd.tmp will be included in the staging area as a new file that is added
+git reset HEAD abcd.tmp
+git status
+# abcd.tmp will now be removed from the staging area
+
+
+######
+# HEAD - by default, it can be considered as the alias to the pointer to the snapshot of the current commit
+# So, to revert the latest commit:
+git revert HEAD
+# a text editor is opened where we can see the revert message.
+# Note: git revert makes an automatic commit in the local repository
+# git revert can be used directly with a commitID to directly revert to a particular commitID
+
+
+
+####
+# Git uses two different algorithms to perform a merge: Fast-forward and Three-way merge.
+
+
+
+####
+# To get some information on remote repository:
+git remote show origin
+# This can also be used to know if our local repository is out of date with the remote repository
+
+# We can get the details of all the branches in the remote repo using the reomte update command
+# This will fetch the contents of all the remote branches so that we can just call checkout or merge as needed.
+git remote update
+
+
+# To get list of branches stored in the remote repository using the -r option in the branch command:
+git branch -r
+
+
+
+# To switch to a branch that has come from the remote update, we can directly use checkout,
+# similar to any local branch
+
+
+# To push a local branch to remote repo:
+git push -o origin branchName
+
+
+
+
+
+
+#########################
+# git rebase: example:
+# From master: create and checkout new branch, do some changes and commit.
+git checkout -b branchName
+# do changes and commit:
+git commit -m "commit message"
+
+git checkout master
+git pull
+# Here there are other commits that were merged from the remote after the pull.
+
+# Here, a fast-forward merge is not possible.
+# To keep the commit history linear, we do a rebase in the branch:
+git checkout branchName
+git rebase master
+
+git log --graph --oneline
+
+git checkout master
+git merge branchName
+
+# Then, to delete the branch in remote:
+git push --delete origin branchName
+git branch -d branchName
+
+git push
+
+###############
+
+
+
+
+#####
+# git rebase can also be used with origin/master after a fetch
+
+git fetch
+git rebase origin/master
+# This can lead to a merge conflict, so git gives us options for:
+# handle the conflicts manually
+# "git add/rm <conflicted_files>", then run-  "git rebase --continue"
+# skip commit using: git rebase --skip
+# abort and get back to state befor rebase using: git rebase --abort
+
+# We have to do a "git rebase --continue" after handling the merge conflict manually
+# git log --graph --oneline
+# We can check the logs using this so that the commits in our local are stored in a linear fashion
+# The changes can then be pushed using "git push"
+
+
