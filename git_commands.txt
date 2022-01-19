@@ -6,6 +6,18 @@
 # https://www.coursera.org/learn/version-control-with-git
 # https://www.coursera.org/learn/introduction-git-github
 
+
+# Add git user and email in git bash:
+git config --global user.name sureshcskkumar
+git config --global user.email sureshcskkumar@gmail.com
+
+# Check user name and email:
+git config --global --list
+git config --global user.name
+git config --global user.email
+
+
+
 # To make a local directory a git repository
 git init
 
